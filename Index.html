@@ -260,32 +260,31 @@ Du darfst nur fühlen.
 
 <script>
 async function loadGallery() {
-  try {
-    const res = await fetch('images.json', { cache: 'no-store' });
-    const files = await res.json();
-    const gallery = document.getElementById('gallery');
+  const res = await fetch('images.json', { cache: 'no-store' });
+  const files = await res.json();
+  const gallery = document.getElementById('gallery');
 
-    // Für 200 Bilder besser 3 Spalten auf großen Screens
-    gallery.style.gridTemplateColumns = (window.innerWidth >= 900) ? '1fr 1fr 1fr' : (window.innerWidth >= 720 ? '1fr 1fr' : '1fr');
+  files.forEach((src, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'thumb';
 
-    files.forEach((src, idx) => {
-      const wrap = document.createElement('div');
-      wrap.className = 'thumb';
-
+    if (src.endsWith('.mp4')) {
+      const video = document.createElement('video');
+      video.src = src;
+      video.controls = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+      wrap.appendChild(video);
+    } else {
       const img = document.createElement('img');
-      img.loading = 'lazy';
-      img.decoding = 'async';
       img.src = src;
-      img.alt = 'Erinnerung ' + (idx + 1);
-
+      img.loading = 'lazy';
+      img.alt = 'Erinnerung ' + (i + 1);
       wrap.appendChild(img);
-      gallery.appendChild(wrap);
-    });
-  } catch (e) {
-    console.error(e);
-    document.getElementById('gallery').innerHTML =
-      '<p style="color:#c9c9cf">Galerie konnte nicht geladen werden. Prüfe images.json und die Dateinamen.</p>';
-  }
+    }
+
+    gallery.appendChild(wrap);
+  });
 }
 loadGallery();
 </script>
