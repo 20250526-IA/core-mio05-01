@@ -246,12 +246,49 @@
       <p class="label">Das sind unsere Momente die für immer bleiben:</p>
 
       <!-- Galerie -->
-      <div class="grid">
-        <div class="thumb"><img src="foto2.jpg" alt="Erinnerung 1"></div>
-        <div class="thumb"><img src="foto3.jpg" alt="Erinnerung 2"></div>
-      </div>
+   <div class="divider"></div>
 
-      <div class="divider"></div>
+<div class="kicker">📸 Erinnerungen</div>
+<h2 class="section-title">Alles, was bleibt</h2>
+<p class="quote">
+Nimm dir Zeit, Core mio.<br>
+Du musst nichts „durchschauen“.<br>
+Du darfst nur fühlen.
+</p>
+
+<div id="gallery" class="grid"></div>
+
+<script>
+async function loadGallery() {
+  try {
+    const res = await fetch('images.json', { cache: 'no-store' });
+    const files = await res.json();
+    const gallery = document.getElementById('gallery');
+
+    // Für 200 Bilder besser 3 Spalten auf großen Screens
+    gallery.style.gridTemplateColumns = (window.innerWidth >= 900) ? '1fr 1fr 1fr' : (window.innerWidth >= 720 ? '1fr 1fr' : '1fr');
+
+    files.forEach((src, idx) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'thumb';
+
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.src = src;
+      img.alt = 'Erinnerung ' + (idx + 1);
+
+      wrap.appendChild(img);
+      gallery.appendChild(wrap);
+    });
+  } catch (e) {
+    console.error(e);
+    document.getElementById('gallery').innerHTML =
+      '<p style="color:#c9c9cf">Galerie konnte nicht geladen werden. Prüfe images.json und die Dateinamen.</p>';
+  }
+}
+loadGallery();
+</script>
 
       <!-- 🤍 Abschied -->
       <div class="kicker">🤍 Abschied</div>
@@ -291,23 +328,32 @@
       <div class="divider"></div>
 
       <!-- 🎵 LIEBLINGSLIED -->
-      <div class="kicker">🎵 Dieses Lied gehört uns</div>
-      <h2 class="section-title">Unser Lied</h2>
-      <p>
-        Manche Lieder sind Erinnerungen.<br>
-        Dieses Lied kennt uns.
-      </p>
-      <p class="quote">
-        Jedes mal wenn du es hörst,<br>
-        bin ich näher als du denkst.
-      </p>
+     <div class="divider"></div>
 
-      <audio controls preload="metadata">
-        <source src="lied.mp3" type="audio/mpeg">
-        Dein Browser unterstützt dieses Audio nicht.
-      </audio>
+<div class="kicker">🎵 Diese Lieder gehören uns</div>
+<h2 class="section-title">Unsere Lieder</h2>
 
-      <div class="divider"></div>
+<p>
+Manche Lieder sind Erinnerungen.<br>
+Diese Lieder kennen uns.
+</p>
+
+<p class="quote">
+Jedes Mal, wenn du sie hörst,<br>
+bin ich näher als du denkst.
+</p>
+
+<p class="label">🎶 Unser Lied – <em>„Rosetto e Café“</em></p>
+<audio controls preload="metadata">
+  <source src="lied1.mp3" type="audio/mpeg">
+  Dein Browser unterstützt dieses Audio nicht.
+</audio>
+
+<p class="label">🎶 Das Lied, das dich mich zu dir bringt – <em>„Mama“</em></p>
+<audio controls preload="metadata">
+  <source src="lied2.mp3" type="audio/mpeg">
+  Dein Browser unterstützt dieses Audio nicht.
+</audio>
 
       <!-- 🎙️ MEINE STIMME -->
       <div class="kicker">🎙️ Meine Stimme</div>
